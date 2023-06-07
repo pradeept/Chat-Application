@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/pradeept/Chat-Application/issues"
   },
-  "homepage": "https://github.com/pradeept/Chat-Application#readme"
+  "homepage": "https://github.com/pradeept/Chat-Application#readme",
+  "dependencies": {
+    "socket.io": "^4.6.2"
+  }
 }
