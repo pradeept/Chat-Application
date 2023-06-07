@@ -32,8 +32,8 @@ io.on("connection",(socket)=>{
   console.log("Connection recieved!");
   console.log(socket.id);
   
-  socket.on("message",(msg)=>{
-    console.log(msg);
+  socket.on("Clicked",(msg,name,time)=>{
+    socket.broadcast.emit('broadcast',msg,name,time);
   });
   
 });

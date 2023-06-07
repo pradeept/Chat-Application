@@ -31,14 +31,18 @@
         <div class="row">
             <div class="chat-container col-sm-12 col-md-8 col-lg-9 ">
                 <div class="user-info">
-                    <p><sapn>Thomas Shelby</sapn><i class="fa-solid fa-circle" style="color:green; font-size: 10px; padding: 10px;"></i></p>
+                    <p><span class="user-title">User</span><i class="fa-solid fa-circle" style="color:green; font-size: 10px; padding: 10px;"></i></p>
                     
                 </div>
                 <div class="msg-container">
-                    <i class="fa-solid fa-user"></i><p class="receiver-chat">Hi, There!</p>
+                    <!-- <div class="receiver-chat">
+                            <i class="fa-solid fa-user rec-userName"></i>
+                            <span>Hi, There!</span>
+                            <p class="user-name">Name</p>
+                    </div>
                     
-                    <p class="sender-chat">Hi, There!</p> 
-                    <i class="fa-solid fa-user"></i><p class="receiver-chat">Hi, There!</p>
+                    <p class='sender-chat'><span>Hello</span></p> -->
+                   
 
                 </div>
 
@@ -52,7 +56,7 @@
                         onblur="this.placeholder = 'enter your text'">
                     </div>
                     <div class="chat-send col-4 col-sm-4 col-md-4 col-lg-2">
-                        <button class="btn btn-primary">Send <i class="fa-solid fa-paper-plane" 
+                        <button class="btn btn-primary send-btn" type="submit">Send <i class="fa-solid fa-paper-plane" 
                             style="font-weight: 400; opacity: 0.7; transform: rotate(40deg);"></i>
                         </button>
                     </div>
@@ -62,7 +66,7 @@
             </div>
             <div class="online-users col-sm-12 col-md-4 col-lg-3 ">
                 <h4>Online <i class="fa-solid fa-circle" style="color:green; font-size: 1rem;"></i></h4>
-                <div><i class="fa-solid fa-user user-icon"></i> Thomas Shelby</div>
+                <div class="online-users-list"><i class="fa-solid fa-user user-icon"></i> Thomas Shelby</div>
             </div>
         </div>
     </section>
