@@ -58,18 +58,19 @@ io.on("connection",(socket)=>{
 
 
   //emitting online users list every second.
-  // setInterval(()=>{
-  //   socket.emit("user-online",usersOnline)
-  // }, 1000);
+  setInterval(()=>{
+    socket.emit("user-online",usersOnline)
+  }, 1000);
 
   //Listening for room join request.
   socket.on('join-room',async(room,name)=>{
     await socket.join(room);
 
+    //MongoDB Model for respective room
     chatModel = database.model(schema,room);
 
     usersOnline.includes(name)?null:usersOnline.push(name);
-    console.log(usersOnline);
+
     socket.to(room).emit('user-online',usersOnline);
 
     socket.on('req-chat-history',(roomName)=>{
@@ -83,11 +84,11 @@ io.on("connection",(socket)=>{
       });
   });
 
-  
-
-    function resultEmit(roomName,chats){
+    //Emitting results to room members
+    const resultEmit = (roomName,chats)=>{
       socket.emit('res-chat-history',chats);
     }
+    
   //Listening for message.
   socket.on("Clicked",(msg,name,time,room)=>{
     const newMsg = new chatModel({

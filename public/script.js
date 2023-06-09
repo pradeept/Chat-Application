@@ -42,10 +42,11 @@ $(document).ready(()=>{
         $('.user-title').text(name);        //set user name in chat UI
         socket.emit('join-room',room,name);
 
-        //asking for chat-history
+        //asking for chat-history - doesn't work consistently
         // socket.emit('req-chat-history',room);
     });
 
+    //listening for chat-history result from server
     socket.on('res-chat-history',(chats)=>{
         console.log(chats);
         for(item of chats){
@@ -59,6 +60,8 @@ $(document).ready(()=>{
         }
     });
 
+
+    //listening for online-users list from server
     socket.on('user-online',(usersOnline)=>{
         if(onlineUsers.sort().join(',')=== usersOnline.sort().join(',')){
            return;
@@ -78,7 +81,7 @@ $(document).ready(()=>{
         console.log("Disconnected!"); 
     });
 
-    
+    //listening for new messages 
     socket.on('broadcast',(msg,name,time)=>{
         let el=`<div class='receiver-chat'>\
                 <i class='fa-solid fa-user rec-userName'></i>\
@@ -89,6 +92,7 @@ $(document).ready(()=>{
         $(".msg-container").animate({ scrollTop: 20000000 },100);     
     });
 
+    //onClic for chat-history
     $('.get-history').click(()=>{
         socket.emit('req-chat-history',room);
         $('.get-history').attr("disabled","true");
