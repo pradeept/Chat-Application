@@ -1,13 +1,16 @@
 import {Server} from 'socket.io';
 import http from 'http';
 import fs from 'fs';
-import { Mongoose } from 'mongoose';
+import db from './public/db.js';
+
+//Connect to mongoDB
+const database = new db();
+database.connect();
 
 //Http Server.
 const httpServer = http.createServer((req,res)=>{
 
   // Routing..
-  
   if(req.url === '/'){
     res.writeHead(200,{"Content-Type": "text/html"});
     const html = fs.readFileSync("./index.html");
@@ -44,26 +47,54 @@ const httpServer = http.createServer((req,res)=>{
 const io = new Server(httpServer,{});
 var usersOnline = [];
 
+//schema and model
+const schema = database.schema();
+var chatModel;
+
 //Listening for connection.
 io.on("connection",(socket)=>{
   console.log("Connection recieved!");
   console.log(socket.id);
 
+
   //emitting online users list every second.
-  setInterval(()=>{
-    socket.emit("user-online",usersOnline)
-  }, 1000);
+  // setInterval(()=>{
+  //   socket.emit("user-online",usersOnline)
+  // }, 1000);
 
   //Listening for room join request.
   socket.on('join-room',async(room,name)=>{
     await socket.join(room);
+
+    chatModel = database.model(schema,room);
+
     usersOnline.includes(name)?null:usersOnline.push(name);
     console.log(usersOnline);
     socket.to(room).emit('user-online',usersOnline);
+
+    socket.on('req-chat-history',(roomName)=>{
+
+      chatModel.find()
+          .then((chats) => {
+            // console.log(chats);
+            resultEmit(roomName,chats);
+          })
+          .catch((err)=>{console.log(err)});
+      });
   });
 
+  
+
+    function resultEmit(roomName,chats){
+      socket.emit('res-chat-history',chats);
+    }
   //Listening for message.
   socket.on("Clicked",(msg,name,time,room)=>{
+    const newMsg = new chatModel({
+      from:name,
+      msg
+    }).save();
+
     socket.to(room).emit('broadcast',msg,name,time);
     socket.to(room).emit('user-online',usersOnline);
   }); 

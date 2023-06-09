@@ -32,19 +32,34 @@ $(document).ready(()=>{
         return false;
     };
 
+
     var socket = io();
-   
+
     socket.on("connect", () => {
         name = getUrlParameter('name');
         room = getUrlParameter('room');
 
         $('.user-title').text(name);        //set user name in chat UI
         socket.emit('join-room',room,name);
-        
+
+        //asking for chat-history
+        // socket.emit('req-chat-history',room);
+    });
+
+    socket.on('res-chat-history',(chats)=>{
+        console.log(chats);
+        for(item of chats){
+            let el=`<div class='receiver-chat'>\
+                <i class='fa-solid fa-user rec-userName'></i>\
+                <span>${item.msg}</span>\
+                <p class='user-name'>${item.from}</p>\
+                </div>`
+        $('.msg-container').append(el);
+        $(".msg-container").animate({ scrollTop: 20000000 },100);  
+        }
     });
 
     socket.on('user-online',(usersOnline)=>{
-        console.log(usersOnline);
         if(onlineUsers.sort().join(',')=== usersOnline.sort().join(',')){
            return;
         }else{
@@ -72,5 +87,10 @@ $(document).ready(()=>{
                 </div>`
         $('.msg-container').append(el);
         $(".msg-container").animate({ scrollTop: 20000000 },100);     
+    });
+
+    $('.get-history').click(()=>{
+        socket.emit('req-chat-history',room);
+        $('.get-history').attr("disabled","true");
     });
 });
