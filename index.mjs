@@ -2,9 +2,11 @@ import {Server} from 'socket.io';
 import http from 'http';
 import fs from 'fs';
 
-
+//Http Server.
 const httpServer = http.createServer((req,res)=>{
 
+  // Routing..
+  
   if(req.url === '/'){
     res.writeHead(200,{"Content-Type": "text/html"});
     const html = fs.readFileSync("./index.html");
@@ -35,16 +37,23 @@ const httpServer = http.createServer((req,res)=>{
 }
 });
 
+
+//Socket.io
+
 const io = new Server(httpServer,{});
 var usersOnline = [];
+
+//Listening for connection.
 io.on("connection",(socket)=>{
   console.log("Connection recieved!");
   console.log(socket.id);
 
+  //emitting online users list every second.
   setInterval(()=>{
     socket.emit("user-online",usersOnline)
   }, 1000);
 
+  //Listening for room join request.
   socket.on('join-room',async(room,name)=>{
     await socket.join(room);
     usersOnline.includes(name)?null:usersOnline.push(name);
@@ -52,6 +61,7 @@ io.on("connection",(socket)=>{
     socket.to(room).emit('user-online',usersOnline);
   });
 
+  //Listening for message.
   socket.on("Clicked",(msg,name,time,room)=>{
     socket.to(room).emit('broadcast',msg,name,time);
     socket.to(room).emit('user-online',usersOnline);
@@ -59,4 +69,6 @@ io.on("connection",(socket)=>{
 });
 
 
+//http Server listening on port 3000.
+//Go to http://127.0.0.1:3000/ 
 httpServer.listen(3000,()=>console.log('HTTP Server Listening on 3000!'));

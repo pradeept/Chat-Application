@@ -1,4 +1,5 @@
 $(document).ready(()=>{
+
     var name = ""
     var room = ""
     var onlineUsers = [];
@@ -70,8 +71,6 @@ $(document).ready(()=>{
                 <p class='user-name'>${name+"\n"+time}</p>\
                 </div>`
         $('.msg-container').append(el);
-        $(".msg-container").animate({ scrollTop: 20000000 },100);
-      
-        
+        $(".msg-container").animate({ scrollTop: 20000000 },100);     
     });
 });

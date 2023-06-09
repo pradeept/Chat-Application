@@ -69,11 +69,14 @@
         $('form').submit((event)=>{
             event.preventDefault();
             let formData = $('form').serializeArray();
-            console.log(formData);
+            // console.log(formData);
             let name = formData[0].value;
             let room = formData[1].value;
             window.location.replace(`http://localhost:3000/Room?name=${name}&room=${room}`);
         })
     });
 </script>
+<footer class="text-center">
+    <small>&copy; Pradeep Tarakar 2023</small>
+</footer>
 </html>
