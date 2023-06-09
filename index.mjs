@@ -1,6 +1,7 @@
 import {Server} from 'socket.io';
 import http from 'http';
 import fs from 'fs';
+import { Mongoose } from 'mongoose';
 
 //Http Server.
 const httpServer = http.createServer((req,res)=>{
